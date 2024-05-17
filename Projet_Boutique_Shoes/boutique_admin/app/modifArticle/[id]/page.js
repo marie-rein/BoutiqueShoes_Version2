@@ -7,11 +7,13 @@ import { useRouter } from "next/navigation";
 
 export default function ModifShoesForm({params}) {
   const [chaussure, setChaussure] = useState({
+    shoesId: '',
     shoesName: '',
     image: '',
     shoesPrice: '',
     shoesDescription: '',
-    lien: '',
+    lienPaiement: '',
+    disponible: true,
   });
   const [disponibilite, setDisponibilite] = useState(false);
   const router = useRouter();
@@ -24,6 +26,7 @@ export default function ModifShoesForm({params}) {
                  
             const response = await  fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes/${params.id}`);
             const json = await response.json();
+            console.log(json);
             setChaussure(json);
             
         } catch (error) {
@@ -36,17 +39,19 @@ export default function ModifShoesForm({params}) {
 }, [params.id]);
 
 const handleChange = (event) => {
-  const { name, value, type, checked } = event.target;
-  const newValue = type === 'checkbox' ? checked : value;
-  if (name === 'disponibilite') {
-    setDisponibilite(newValue);
-  }
-  setChaussure(prevState => ({ ...prevState, [name]: newValue }));
+  const { name, value} = event.target;  
+  setChaussure(prevState => ({ ...prevState, [name]: value }));
+};
+
+const handleChecked = (event) => {
+  setChaussure(prevState => ({ ...prevState, disponible: !chaussure.disponible }));
 };
 
 
   async function modifChaussure(formData) {
+    console.log(Array.from(formData.entries()));
     await modifShoes(formData);
+    
     router.push('../inventaire');
   }
 
@@ -61,25 +66,25 @@ const handleChange = (event) => {
                 <h2 className="card-title text-center mb-4">Modifier la chaussure</h2>
                 <form action={modifChaussure}>
                   <div className="form-group">
-                  <label htmlFor="nom">Id chaussure </label>
-                    <input type="text" className="form-control" id="id" name="id" value={params.id} onChange={handleChange} disabled/>
+                  <label htmlFor="shoesId">Id chaussure </label>
+                    <input type="number" className="form-control" id="shoesId" name="shoesId" defaultValue={chaussure.shoesId} onChange={handleChange} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="nom">Nom de la chaussure</label>
-                    <input type="text" className="form-control" id="nom" name="nom" defaultValue={chaussure.shoesName} onChange={handleChange}/>
+                    <input type="text" className="form-control" id="nom" name="shoesName" defaultValue={chaussure.shoesName} onChange={handleChange}/>
 
                   </div>
                   <div className="form-group">
                     <label htmlFor="image">URL de l'image</label>
-                    <input type="text" className="form-control" id="image" name="image" value={chaussure.image} onChange={handleChange} disabled/>
+                    <input type="file" className="form-control" id="image" name="image"  onChange={handleChange}/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="prix">Prix</label>
-                    <input type="number" className="form-control" id="prix" name="prix" defaultValue={chaussure.shoesPrice} onChange={handleChange}/>
+                    <input type="number" className="form-control" id="prix" name="shoesPrice" defaultValue={chaussure.shoesPrice} onChange={handleChange}/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="description">Description</label>
-                    <textarea className="form-control" id="description" name="description"  defaultValue={chaussure.shoesDescription} onChange={handleChange}></textarea>
+                    <textarea className="form-control" id="description" name="shoesDescription"  defaultValue={chaussure.shoesDescription} onChange={handleChange}></textarea>
                   </div>
                   <div className="form-group">
                     <label>Créer son lien de paiement: </label>
@@ -87,13 +92,13 @@ const handleChange = (event) => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="lien">Inserer le lien de paiement</label>
-                    <input type="text" className="form-control" id="lien" name="lien" defaultValue={chaussure.lienPaiement} onChange={handleChange} />
+                    <input type="text" className="form-control" id="lien" name="lienPaiement" defaultValue={chaussure.lienPaiement} onChange={handleChange} />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="disponibilite">Disponibile</label>
-                    <input type="checkbox" id="disponibilite" name="disponibilite" checked={disponibilite} onChange={handleChange}/>
+                    <label htmlFor="disponibilite">Disponibilité</label>
+                    <input type="checkbox" id="disponibilite" name="disponible" checked={chaussure.disponible} onChange={handleChecked}/>
                   </div>
-                  <button type="submit" className="btn btn-danger btn-block">Update</button>
+                  <button type="submit" className="btn btn-danger btn-block">Modifier</button>
                 </form>
               </div>
             </div>

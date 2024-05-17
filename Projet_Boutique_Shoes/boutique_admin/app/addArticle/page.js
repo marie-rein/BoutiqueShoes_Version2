@@ -34,7 +34,7 @@ function AddShoesForm() {
                   </div>
                   <div className="form-group">
                     <label htmlFor="image">URL de l'image</label>
-                    <input type="file" className="form-control" id="image" name="ImageFile" accept="image/*"  required />
+                    <input type="file" className="form-control" id="image" name="Image" accept="image/*"  required />
                   </div>
                   <div className="form-group">
                     <label htmlFor="prix">Prix</label>

@@ -3,7 +3,7 @@
     export default async function addShoes(formData) {
         try {
             const ShoesName = formData.get('ShoesName');
-            const ImageFile = formData.get('ImageFile'); // Récupérer le fichier d'image
+            const Image = formData.get('Image'); // Récupérer le fichier d'image
             const shoesPrice = formData.get('shoesPrice');
             const ShoesDescription = formData.get('ShoesDescription');
             const lienPaiement = formData.get('LienPaiement');

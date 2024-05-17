@@ -11,6 +11,7 @@ export default function Homme() {
   const [nomShoes, setNomShoes] = useState('');
   const [chaussure, setChaussure] = useState(null);
   const [offcanvasVisible, setOffcanvasVisible] = useState(false); // Nouvel état pour contrôler la visibilité du offcanvas
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     async function fetchResearchChaussures() {
@@ -18,28 +19,29 @@ export default function Homme() {
         const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes?shoesName=${nomShoes}`);
         const json = await response.json();
         if (json.length > 0) {
-
-          const chaussuresAvecImages = json.map(chaussure => ({
-            ...chaussure,
-            imageUrl: `data:image/png;base64,${chaussure.image}`
-        }));
-          setChaussure(chaussuresAvecImages[0]); // affiche uniquement la première chaussure trouvée
-          console.log(chaussuresAvecImages);
-          setOffcanvasVisible(true); // Ouvrir le offcanvas lorsqu'une chaussure correspondante est trouvée
-          setNomShoes('');
+          const matchingShoe = json.find(shoe => shoe.shoesName === nomShoes); 
+          if (matchingShoe) {
+            setChaussure(matchingShoe); 
+            setImageUrl(`data:image/png;base64,${matchingShoe.image}`);
+            setOffcanvasVisible(true);
+          } else {
+            setChaussure(null); 
+            alert('Aucune chaussure correspondante n\'a été trouvée');
+          }
         } else {
-          setChaussure(null); // Réinitialiser si aucune chaussure n'est trouvée
-          alert('Aucune chaussure correspondante n\'a été trouvé');
+          setChaussure(null); 
+          alert('Aucune chaussure correspondante n\'a été trouvée');
         }
       } catch (error) {
         console.error('Erreur lors de la recherche des chaussures:', error);
       }
     }
-
+  
     if (nomShoes !== '') {
       fetchResearchChaussures();
     }
   }, [nomShoes]);
+  
 
   const handleSearchSubmit = (e) => {
     e.preventDefault(); 
@@ -59,7 +61,7 @@ export default function Homme() {
         </div>
         <div className="offcanvas-body">
         {chaussure && (
-            <ShoesCard key={chaussure.shoesId} id={chaussure.shoesId} nom={chaussure.shoesName} imageUrl={chaussure.imageUrl} prix={chaussure.shoesPrice} disponibilite={chaussure.disponible}/>
+            <ShoesCard key={chaussure.shoesId} id={chaussure.shoesId} nom={chaussure.shoesName} imageUrl={imageUrl} prix={chaussure.shoesPrice} disponibilite={chaussure.disponible}/>
           )}
         </div>
       </div>

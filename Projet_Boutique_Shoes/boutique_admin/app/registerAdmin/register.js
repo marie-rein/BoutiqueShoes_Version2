@@ -3,7 +3,7 @@
 export default async function Register(formData) {
     try {
         const Username = formData.get('username');
-        const Email = formData.get('email'); // Récupérer le fichier d'image
+        const Email = formData.get('email'); 
         const Password = formData.get('password');
  
         
