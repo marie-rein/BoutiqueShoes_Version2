@@ -49,9 +49,7 @@ const handleChecked = (event) => {
 
 
   async function modifChaussure(formData) {
-    console.log(Array.from(formData.entries()));
     await modifShoes(formData);
-    
     router.push('../inventaire');
   }
 
@@ -76,7 +74,8 @@ const handleChecked = (event) => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="image">URL de l'image</label>
-                    <input type="file" className="form-control" id="image" name="image"  onChange={handleChange}/>
+                    
+                    <input type="file" className="form-control" id="image" name="image"  onChange={handleChange} required/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="prix">Prix</label>
