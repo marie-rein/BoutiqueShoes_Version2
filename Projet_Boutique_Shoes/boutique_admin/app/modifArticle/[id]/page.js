@@ -95,7 +95,7 @@ const handleChecked = (event) => {
                     <input type="text" className="form-control" id="lien" name="lienPaiement" defaultValue={chaussure.lienPaiement} onChange={handleChange} />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="disponibilite">Disponibilité</label>
+                    <label htmlFor="disponibilite">Disponible</label>
                     <input type="checkbox" id="disponibilite" name="disponible" checked={chaussure.disponible} onChange={handleChecked}/>
                   </div>
                   <button type="submit" className="btn btn-danger btn-block">Modifier</button>
