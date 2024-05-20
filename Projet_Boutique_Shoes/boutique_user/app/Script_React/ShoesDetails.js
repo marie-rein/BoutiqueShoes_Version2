@@ -65,14 +65,15 @@ function ShoesDetails({ chaussureId }) {
       console.error("Erreur lors de l'ajout de l'article au panier :", error);
     }
   }
-  if (chaussure.disponible || chaussure.NbrEnStock > 0) {
+  if (chaussure.disponible) {
   return (
     <div className="container-fluid">
       <br />
       <div className="row">
         <div className="col-6 col-lg-6">
           <Image src={imageUrl} alt={chaussure.shoesName} width={280} height={300} />
-          <p className="col-8 col-lg-8 contenuLambda"><h3>Description</h3> {chaussure.shoesDescription}</p>
+          <h3>Description</h3>
+          <p className="col-8 col-lg-8 contenuLambda"> {chaussure.shoesDescription}</p>
         </div>
         <div className="col-6 col-lg-6">
           <form action={addChaussurePanier}>

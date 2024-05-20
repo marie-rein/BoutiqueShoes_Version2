@@ -13,13 +13,11 @@
             */
            formData.get("disponible") ? formData.set("disponible", true) : formData.set("disponible", false);
             
-            console.log(formData);
             const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes/${formData.get('shoesId')}`, {
                 method: 'PUT',
                 body: formData
             });
     
-            console.log(response);
             if (!response.ok) {
                
                 throw new Error("Erreur lors de la modification de la chaussure");

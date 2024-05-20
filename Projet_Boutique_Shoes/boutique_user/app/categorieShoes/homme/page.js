@@ -19,7 +19,8 @@ export default function Homme() {
         const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes?shoesName=${nomShoes}`);
         const json = await response.json();
         if (json.length > 0) {
-          const matchingShoe = json.find(shoe => shoe.shoesName === nomShoes); 
+          const normalizedNomShoes = nomShoes.toLowerCase();
+          const matchingShoe = json.find(shoe => shoe.shoesName.toLowerCase() === normalizedNomShoes); 
           if (matchingShoe) {
             setChaussure(matchingShoe); 
             setImageUrl(`data:image/png;base64,${matchingShoe.image}`);
@@ -42,6 +43,7 @@ export default function Homme() {
     }
   }, [nomShoes]);
   
+  
 
   const handleSearchSubmit = (e) => {
     e.preventDefault(); 
@@ -55,7 +57,7 @@ export default function Homme() {
       <div className={`offcanvas offcanvas-end ${offcanvasVisible ? 'show' : ''}`} tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div className="offcanvas-header">
           <h5 className="offcanvas-title" id="offcanvasRightLabel">Resultat de la recherche</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onClick={() => setOffcanvasVisible(false)}></button>
+          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onClick={() => setOffcanvasVisible(false)}></button>
 
 
         </div>
