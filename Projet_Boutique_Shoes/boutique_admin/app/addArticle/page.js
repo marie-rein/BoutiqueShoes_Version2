@@ -4,14 +4,26 @@ import addShoes from './addArticleServer';
 import Header from '@/app/ScriptReact/Header';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { jwtDecode } from "jwt-decode";
 
 function AddShoesForm() {
   const router = useRouter();
   async function addChaussure(formData) {
     try {
-      await addShoes(formData);
-     
-      router.push('../inventaire');
+
+      const token = localStorage.getItem('token');
+
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      if (!userRole || userRole.toLowerCase() !== 'administrateur') {
+          throw new Error("Accès refusé. Seuls les administrateurs peuvent ajouter des chaussures.");
+      }
+      else 
+      {
+
+        await addShoes(formData,token);
+        router.push('../inventaire');
+      }
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la chaussure :', error);
     }

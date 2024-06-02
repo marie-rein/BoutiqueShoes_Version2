@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from "@/app/ScriptReact/Header";
 import modifShoes from "../modifArticleServer";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 
 export default function ModifShoesForm({params}) {
@@ -49,7 +50,16 @@ const handleChecked = (event) => {
 
 
   async function modifChaussure(formData) {
-    await modifShoes(formData);
+
+    const token = localStorage.getItem('token');
+      
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    
+    if (!userRole || userRole.toLowerCase() !== 'administrateur') {
+        throw new Error("Accès refusé. Seuls les administrateurs peuvent ajouter des chaussures.");
+    }
+    await modifShoes(formData, token);
     router.push('../inventaire');
   }
 

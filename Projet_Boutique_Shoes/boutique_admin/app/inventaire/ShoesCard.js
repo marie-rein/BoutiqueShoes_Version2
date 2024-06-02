@@ -6,16 +6,33 @@ import Link from 'next/link';
 function ShoesCard({id, nom, image, prix, disponibilite}) {
     const handleDeleteshoes = async (shoesId) => {
         try {
-            const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes/${shoesId}`, {
+
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                throw new Error("Token non trouvé dans le localStorage");
+            }
+
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            if (!userRole || userRole.toLowerCase() !== 'administrateur') {
+                throw new Error("Accès refusé. Seuls les administrateurs peuvent supprimer des chaussures.");
+            }
+            else 
+            {
+
+                const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes/${shoesId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
   
             });
+        }
 
             if (!response.ok) {
-                throw new Error('Erreur lors de la modification de la chaussure');
+                throw new Error('Erreur lors de la suppression de la chaussure');
             }
 
         } catch (error) {

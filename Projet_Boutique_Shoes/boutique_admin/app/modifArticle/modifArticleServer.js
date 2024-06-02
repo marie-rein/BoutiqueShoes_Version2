@@ -1,18 +1,14 @@
 "use server";
 
-    export default async function modifShoes(formData) {
+    export default async function modifShoes(formData,token) {
         try {
-            /*
-            const shoesId = formData.get('shoesId');
-            const shoesName = formData.get('shoesName');
-            const imageFile = formData.get('image'); // Récupérer le fichier d'image
-            const shoesPrice = formData.get('shoesPrice');
-            const ShoesDescription = formData.get('shoesDescription');
-            const lienPaiement = formData.get('lienPaiement');
-            const disponible = formData.get('disponible');
-            */
+         
            formData.get("disponible") ? formData.set("disponible", true) : formData.set("disponible", false);
             
+           if (!token) 
+            {
+                throw new Error("Token non trouvé dans le localStorage");
+            }
             const response = await fetch(`https://projet05-dicjprog4.cegepjonquiere.ca/api/Shoes/${formData.get('shoesId')}`, {
                 method: 'PUT',
                 body: formData
